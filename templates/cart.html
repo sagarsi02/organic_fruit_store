@@ -32,8 +32,9 @@
 
     getCartDetails().then(data => {
         let total_value = 0
+        let user_id = 0
         for (let i = 0; i < data.length; i++) {
-            total_value += data[i]['price']
+            total_value += data[i]['price'] * data[i]['product_quentity']
             cart_details.innerHTML += `
           <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
             <img src="/media/${data[i]['image']}" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
@@ -52,11 +53,22 @@
                 <h6 class="mb-0">Price</h6>
                 <p class="mb-0 opacity-75">${data[i]['price'] * data[i]['product_quentity']}</p>
             </div>
+            <div>
+                <h6 class="mb-0">Action</h6>
+                <button type="button" class="btn text-danger" onclick="delProduct('${data[i]['product_id'].toString()}', ${data[i]['user_id']})"><i class="fa-solid fa-trash"></i></button>
+            </div>
           </div>
           </a>
         `;
+            user_id = data[i]['user_id']
         }
-        checkout_btn.innerHTML = `<button class="btn btn-primary" type="button" >Checkout - Total Price : ${total_value}</button>`;
+        checkout_btn.innerHTML = `<a href="/order-place/?user_id=${user_id}" class="btn btn-primary" type="button" >Checkout - Total Price : ${total_value}</a>`;
     });
+
+    function delProduct(product_id, user_id) {
+        console.log(product_id)
+        console.log(user_id)
+        window.location = `/remove-product/?user=${user_id}&product=${product_id}`
+    }
 </script>
 {% endblock %}

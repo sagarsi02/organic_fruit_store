@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import product, cart
+from .models import product, cart, orderdetails
 from django.db.models import F
 from django.http import JsonResponse
 from .connection import my_custom_sql
@@ -129,3 +129,26 @@ def basket_list(request):
 
 def basket(request):
     return render(request, 'cart.html')
+
+def removeProduct(request):
+    product_id = request.GET['product']
+    user_id = request.GET['user']
+
+    remove = cart.objects.filter(product_id=product_id).filter(user_id=user_id)
+    remove.delete()
+    messages.success(request, f'Successfully removed from your cart!')
+    return redirect('/basket/')
+
+def order_place(request):
+    if request.GET.get('user_id'):
+        if request.method == 'POST':
+            user_id = request.POST['user_ids']
+            name = request.POST['name']
+            email = request.POST['email']
+            number = request.POST['number']
+            pincode = request.POST['pincode']
+            address = request.POST['address']
+            
+        return render(request, 'orderplace.html')
+    else:
+        return redirect('/')

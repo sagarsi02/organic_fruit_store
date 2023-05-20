@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone  
 import uuid
 
 
@@ -24,3 +24,27 @@ class cart(models.Model):
     product_id = models.CharField(max_length=100, null=False, blank=False)
     user_id = models.CharField(max_length=50)
     product_quentity = models.IntegerField(default=1)
+
+
+order_details = (
+    ("Order Receive", "Order Receive"), 
+    ("Order Packed", "Order Packed"), 
+    ("Order Out for Delivery", "Order Out for Delivery"), 
+    ("Order Delivered", "Order Delivered"), 
+)
+
+class orderdetails(models.Model):
+    product_id_with_questity = models.CharField(max_length=250, null=False, blank=False)
+    user_id = models.CharField(max_length=50, null=False, blank=False)
+    total_fare = models.IntegerField(null=False, blank=False)
+    name = models.CharField(max_length=50, null=False, blank=False)
+    email = models.EmailField(max_length=80, null=False, blank=False)
+    number = models.IntegerField(null=False, blank=False)
+    pincode = models.IntegerField(null=False, blank=False)
+    address = models.CharField(max_length=200, null=False, blank=False)
+    order_id = models.UUIDField(primary_key = True, default = uuid.uuid4)
+    date_time = models.DateTimeField(timezone.now())
+    order_status = models.CharField(max_length = 50, choices = order_details, default = 'Order Receive')
+
+
+

@@ -10,7 +10,9 @@ urlpatterns = [
    path('userLogout/', views.userLogout, name='userLogout'),
    path('cart/<int:user_id>/<str:product_id>/', views.add_to_cart, name='add_to_cart'),
    path('basket_list/', views.basket_list, name='basket_list'),
-   path('basket/', views.basket, name='basket')
+   path('basket/', views.basket, name='basket'),
+   path('remove-product/', views.removeProduct, name='removeProduct'),
+   path('order-place/', views.order_place, name='order_place')
 ]
 
 if settings.DEBUG:
